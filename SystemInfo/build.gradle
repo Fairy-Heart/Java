@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group = 'sys.app'
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    implementation 'com.github.oshi:oshi-core:6.6.2'
+    // SLF4J API
+    implementation 'org.slf4j:slf4j-api:2.0.0'
+
+    // Logback implementation
+    implementation 'ch.qos.logback:logback-classic:1.4.12'
+}
+

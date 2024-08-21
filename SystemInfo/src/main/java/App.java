@@ -1,5 +1,6 @@
 import oshi.SystemInfo;
 import javax.swing.*;
+import java.awt.datatransfer.StringSelection;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class App extends  JFrame {
     private final JLabel osProcessor = new JLabel();
 
     private  final JLabel memoryRAM = new JLabel();
+
+    private final JButton copyButton = new JButton();
 
     private final SystemInfo systemInfo = new SystemInfo(); // this field require oshi library
     public App() {
@@ -67,6 +70,7 @@ public class App extends  JFrame {
         getSystemModel();
         getOSProcessor();
         getMemoryRAM();
+        setCopyButton();
     }
 
     private void currentTime() {
@@ -262,6 +266,53 @@ public class App extends  JFrame {
         this.add(memoryRAM);
     }
 
+
+    /*
+    this function added copyButton
+    */
+    private void setCopyButton() {
+        copyButton.setText(
+                "<html>" +
+                        "<strong>Copy all information</strong> </html>"
+        );
+        copyButton.setForeground(Color.WHITE);
+        copyButton.setFont(AppFont);
+        copyButton.setBackground(new Color(33 , 33, 33));
+        copyButton.setBounds(160, 350, 400, 20);
+        copyButton.setBorder(null);
+        copyButton.setFocusPainted(false);
+
+        copyButton.addActionListener(copyButtonClicked -> {
+            String infoData =
+                    currentTime.getText().replaceAll("<[^>]+>", "")
+                            + "\n"
+                            + computerName.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + osName.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + osLanguage.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + osCountry.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + osManufacturer.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + osModel.getText().replaceAll("<[^>]+>", "")
+                    + "\n"
+                    + memoryRAM.getText().replaceAll("<[^>]+>", "");
+
+            StringSelection stringSelection = new StringSelection(infoData);
+            // copy all information
+            Toolkit.getDefaultToolkit()
+                    .getSystemClipboard()
+                    .setContents(stringSelection, null);
+
+            copyButton.setText(
+                    "<html><strong>Copied !</strong></html>"
+            );
+        });
+
+        this.add(copyButton);
+    }
     public static void main(String[] args) {
         SwingUtilities.invokeLater(App::new);
     }
